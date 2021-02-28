@@ -6,6 +6,7 @@ Worked on Raspberry Pi 3 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and te
 
 #                               #### ONLY WORKS ON LINUX ####
 
+Installation of the script :
 ```
 git clone https://github.com/Miniflint/MinecraftServerScript
 ```
