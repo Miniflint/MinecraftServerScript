@@ -20,13 +20,25 @@ executing the script :
 ./MCserv.sh/
 ```
 
+If you want to change the RAM usage of your server : 
+```
+Nano MCserv.sh
+```
+
+And change the value of "-Xms[VALUE(1024=1G ram)] and -Xmx[VALUE(2048=2G ram)]
+```
+Startup="java -Xms1024M -Xmx2048M -jar ${PathJar} nogui"
+```
+Xms is the Mnimum use and Xmx is the maximum
+
 What the script do is :
   1. Ask you to put a name for the directory and the name of the server
   2. Ask you for the jar file URL, here is a list for you :
     2a. https://papermc.io/api/v2/projects/paper/versions/1.16.5/builds/503/downloads/paper-1.16.5-503.jar
-    2b. https://adfoc.us/serve/sitelinks/?id=271228&url=https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.4-35.1.37/forge-1.16.4-35.1.37-installer.jar
-    2c. https://cdn.getbukkit.org/spigot/spigot-1.16.5.jar
-#   2d. NOTE : THE SERVER VERSION IS 1.16.5 FOR SPIGOT AND PAPERMC - FORGE IS IN 1.16.4
+    2b. https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.4-35.1.37/forge-1.16.4-35.1.37-installer.jar
+       2ba. (Be careful when you get the link, it show and adfocus before  and it doesn't work. You have to delete everything before url=(including url=)
+    2d. https://cdn.getbukkit.org/spigot/spigot-1.16.5.jar
+#   2e. NOTE : THE SERVER VERSION IS 1.16.5 FOR SPIGOT AND PAPERMC - FORGE IS IN 1.16.4
 
   3. install these requirements
     3a. net-tools
