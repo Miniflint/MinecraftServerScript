@@ -10,6 +10,10 @@ Installation of the script :
 ```
 git clone https://github.com/Miniflint/MinecraftServerScript
 ```
+go in the directory :
+```
+cd MinecraftServerScript
+```
 
 make the script executable :
 ```
