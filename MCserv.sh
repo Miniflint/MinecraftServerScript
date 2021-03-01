@@ -4,17 +4,17 @@
 NC='\033[0m' # No Color
 green=`tput setaf 2`
 RED='\033[0;31m'
-idkcolor '\033[36m'
+cyan='\033[0;36m'
+printf "\033c"
 
-echo -e "Enter The name of the server ex : ${green}PaperMC ${NC}/ ${RED}ForgeServer: ${NC}\n"
-read -r -p DirName
-echo -e "Now please enter the url of the file to download ex : ${idkcolor}https.../.../.../.../file.jar: ${NC}\n"
-read -r -p Url
+echo -e "${green}Enter The name of your folder  ex : ${NC}PaperMC ${NC}/ ${RED}ForgeServer: ${NC}"
+read DirName
+echo -e "${green}Now please enter the url of the file to download ex : ${NC}https.../.../.../.../file.jar: ${NC}"
+read Url
 Name="${DirName}.jar"
 DirPath="/opt/minecraft${DirName}"
 PathJar="/opt/minecraft${DirName}/${Name}"
-Startup="java -Xms1024M -Xmx2048M -jar ${PathJar} nogui"
-printf "\033c"
+Startup="java -Xms1024M -Xmx2000M -jar ${PathJar} nogui "
 
 
 set -eu -o pipefail # fail on error , debug all lines
@@ -22,10 +22,10 @@ set -eu -o pipefail # fail on error , debug all lines
 sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
 
-echo -e "${green}Installing the must-have pre-requisites${NC}${RED}"
+echo -e "\n${green}Installing the must-have pre-requisites${NC}${cyan}"
 while read -r p ; do sudo apt-get install -y $p ; done < <(cat << "EOF"
     net-tools
-    openjdk-8-jdk
+    default-jre-headless
     curl
     screen
 EOF
@@ -39,24 +39,31 @@ mkdir ${DirPath}
 cd ${DirPath}
 echo -e "${NC}Folder Creation : [${green}OK${NC}]"
 
-echo -e "\n${green}Installing ${DirName} for the server${NC}${RED}"
-if [[ $Url == *"forge"* ]]; then
-	curl -o ${Name} ${Url} --installServer
-else
-	curl -o ${Name} ${Url}
-fi
+echo -e "\n${green}Installing ${DirName} for the server${NC}${cyan}"
+curl -o ${Name} ${Url}
 echo -e "${NC}Installation of ${DirName} : [${green}OK${NC}]"
 
-echo -e "\n\n${green}Un-jaring the file${NC}${RED}"
+echo -e "\n\n${green}Un-jaring on ${Name}${NC}${cyan}"
 cd ${DirPath}
-java -jar ${Name} #java -jar PaperMC.jar
+if [[ $Url == *"forge"* ]]; then
+	java -jar ${Name} --installServer
+else
+	java -jar ${Name}
+fi
 echo -e "${NC}Un-jaring the file : [${green}OK${NC}]"
 
-echo -e "\n\n${green}Starting the file server${NC}${RED}"
-cd ${DirPath} && ${Startup}
+echo -e "\n\n${green}Starting the file server ${Startup}${NC}${cyan}"
+if [[ $Url == *"forge"* ]]; then
+	var=$(/bin/find ${DirPath} -maxdepth 1 -name "forge-1.*.jar")
+	echo -e "${RED}${var}\n${DirPath}"
+	cd ${DirPath} && java  -Xms1024M -Xmx2000M -jar ${var} nogui #    cd /opt/minecraft && java -Xms1024M -Xmx2000M -jar /opt/minecraft/forge-1.12.2-14.23.5.2854.jar nogui 
+else
+	cd ${DirPath} && ${Startup}
+fi
 echo -e "${NC}Starting the Server File : [${green}OK${NC}]"
 
-echo -e "\n\n${green}Accepting the EULA TERM${NC}${RED}"
+
+echo -e "\n\n${green}Accepting the EULA TERM${NC}${cyan}"
 sed -i 's/eula=false/eula=true/' eula.txt
 echo -e "${NC}Changing file Configuration : [${green}OK${NC}]"
 
@@ -74,11 +81,11 @@ chmod +x minecraft.sh
 echo -e "${NC}Creation of the script: [${green}OK${NC}]"
 sleep 3
 printf "\033c"
-read -n1 -r -p "Install the script at the boot [Y/n]: " input
+read -n1 -r -p "Install the script at the boot [Y/n]: ${cyan}" input
  
 case $input in
     [yY][eE][sS]|[yY])
- echo -e "\n\n${green}Installing the script${NC}"
+ echo -e "\n\nInstalling the script${NC}"
  echo "screen -dm -S minecraft /opt/scripts/minecraft.sh" > /etc/rc.local
  chmod +x /etc/rc.local
  echo -e "${NC}Server on Startup: [${green}OK${NC}]"
@@ -95,4 +102,3 @@ echo -e "\n${green}Configuring the start of the server"
 screen -S ${DirName} && cd ${DirPath} && ${Startup}
 echo -e "${NC}Configuration at the start of the server : [${green}OK${NC}]"
 sleep 3
-
