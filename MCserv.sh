@@ -14,7 +14,7 @@ read Url
 Name="${DirName}.jar"
 DirPath="/opt/minecraft${DirName}"
 PathJar="/opt/minecraft${DirName}/${Name}"
-Startup="java -Xms1024M -Xmx2000M -jar ${PathJar} nogui "
+Startup="java -Xms4G -Xmx5G -jar ${PathJar} nogui "
 
 
 set -eu -o pipefail # fail on error , debug all lines
