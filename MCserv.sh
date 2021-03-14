@@ -36,7 +36,7 @@ printf "\033c"
 
 echo -e "${green}Creating the folder for minecraft in /opt and installing ${DirName}${NC}"
 mkdir ${DirPath}
-if [[ -d "/opt/${DirPath}" ]]
+if [[ -d "${DirPath}" ]]
 then
     cd ${DirPath}
     echo -e "${NC}Folder Creation : [${green}OK${NC}]"
