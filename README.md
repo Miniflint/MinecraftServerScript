@@ -1,6 +1,6 @@
 # MinecraftServerScript
 Automatically install and configue a minecraft server
-Worked on Raspberry Pi 3 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and tested with forge 1.16.4
+Tested on Raspberry Pi 3 B+ and Raspberry 4 using Ubuntu Server 20.04 Using Ssh via PuTTY and tested with forge 1.16.4
 # TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)
 # IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565
 
