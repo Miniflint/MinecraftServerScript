@@ -13,9 +13,8 @@ echo -e "${green}Enter the name of the world to delete${NC}"
 read World
 
 dirName="/opt/minecraft${World}"
-scriptName="opt/scripts/${World}.sh"
+scriptName="/opt/scripts/${World}.sh"
 
-echo -e "${green}Removing ${World}${NC}"
 if [[ -d $dirName ]]
 then
 	rm -rf ${dirName}
@@ -28,7 +27,6 @@ then
 	fi
 fi
 
-echo -e "${green}Deleting ${World} script${NC}"
 if [[ -f $scriptName ]]
 then
 	rm ${scriptName}
