@@ -45,7 +45,13 @@ else
 fi
 
 curl -o ${PathJar} ${Url} --silent
-[ ! -f ${PathJar} ] && echo -e "${NC}Installation of the server : [${RED}NOT OK${NC}]" && exit|| echo -e "${NC}Installation of the server : [${green}OK${NC}]"
+if [[ ! -f ${PathJar} ]]
+then
+	echo -e "${NC}Download URL : [${RED}NOT OK${NC}]"
+       	exit
+else
+	echo -e "${NC}Download URL : [${green}OK${NC}]"
+fi
 
 cd ${DirPath}
 if [[ $Url == *"forge"* ]]
@@ -64,7 +70,13 @@ then
 else
 	${Startup} &> /dev/null
 fi
-[ ! -f "${DirPath}/server.properties" ] echo -e "${NC}Starting the Server File : [${RED}NOT OK${NC}]" && exit || echo -e "${NC}Starting the Server File : [${green}OK${NC}]"
+if [[ ! -f "${DirPath}/server.properties" ]]
+then
+	echo -e "${NC}Starting the Server File : [${RED}NOT OK${NC}]"
+	exit
+else
+	echo -e "${NC}Starting the Server File : [${green}OK${NC}]"
+fi
 
 sed -i 's/eula=false/eula=true/' eula.txt
 echo -e "${NC}Accepting EULA TERM : [${green}OK${NC}]"
