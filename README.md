@@ -1,6 +1,6 @@
 # MinecraftServerScript
 Automatically install and configue a minecraft server
-Tested on Raspberry Pi 3 B+ and Raspberry 4 using Ubuntu Server 20.04 Using Ssh via PuTTY and tested with forge 1.16.4
+Worked on Raspberry Pi 3 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and tested with forge 1.16.4
 # TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)
 # IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565
 
@@ -42,8 +42,8 @@ What the script do is :
     2a. https://papermc.io/api/v2/projects/paper/versions/1.16.5/builds/503/downloads/paper-1.16.5-503.jar
     2b. https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.4-35.1.37/forge-1.16.4-35.1.37-installer.jar
        2ba. (Be careful when you get the link, it show and adfocus before  and it doesn't work. You have to delete everything before url=(including url=)
-    2d. https://cdn.getbukkit.org/spigot/spigot-1.16.5.jar 
-    *2e. NOTE : THE SERVER VERSION IS 1.16.5 FOR SPIGOT AND PAPERMC - FORGE IS IN 1.16.4*
+    2d. https://cdn.getbukkit.org/spigot/spigot-1.16.5.jar
+#   2e. NOTE : THE SERVER VERSION IS 1.16.5 FOR SPIGOT AND PAPERMC - FORGE IS IN 1.16.4
 
   3. install these requirements
     3a. net-tools
