@@ -33,7 +33,7 @@ if [[ -f $scriptName ]]
 then
 	rm ${scriptName}
 	sleep 1
-	if [[ ! -f ${scriptName} ]]
+	if [[ ! -f $scriptName ]]
 	then
 		echo -e "${NC}Removing script : [${green}OK${NC}]"
 	else
