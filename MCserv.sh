@@ -83,26 +83,4 @@ chmod +x ${scriptPath}/${DirName}.sh
 sleep 2
 [ ! -f ${scriptPath}/${DirName}.sh ] && echo -e "${NC}Creation of the script: [${RED}NOT OK${NC}]" && exit || echo -e "${NC}Creation of the script: [${green}OK${NC}]"
 sleep 2
-echo -e "${green}Install the script at the boot [Y/n]: ${cyan}"
-read input
-
-case $input in
-    [yY][eE][sS]|[yY])
- echo -e "\n\nInstalling the script${NC}"
- echo "screen -dm -S minecraft ${scriptPath}/${DirName}.sh" > /etc/rc.local
- chmod +x /etc/rc.local
- echo -e "${NC}Server on Startup: [${green}OK${NC}]"
-;;
-    [nN][oO]|[nN])
- echo -e "\n\nThanks for downloading :)"
- sleep 3
-       ;;
-    *)
- echo "Invalid input"
- exit 1
- ;;
-esac
-echo -e "\n${green}Configuring the start of the server"
-screen -S ${DirName} && cd ${DirPath} && ${Startup}
-echo -e "${NC}Configuration at the start of the server : [${green}OK${NC}]"
-sleep 3
+cd ${scriptPath}
