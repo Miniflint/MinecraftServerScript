@@ -82,7 +82,7 @@ fi
 bin=$"#!/bin/bash\n\t"
 if [[ -f "server.properties/$Gamemode.txt" ]]
 then
-        ServerProperties="$cat server.properties/${Gamemode}.txt"
+	ServerProperties=$(cat server.properties/${Gamemode}.txt)
         check_if_ok 1 "Checking file"
 else
         check_if_ok 0 "Checking file"
@@ -123,7 +123,7 @@ fi
 sed -i 's/eula=false/eula=true/' eula.txt
 check_if_ok 1 "Acceptiing EULA terms"
 
-echo ${ServerProperties} > server.properties
+echo "${ServerProperties}" > server.properties
 if [[ -s server.properties ]]
 then
 	check_if_ok 1 "Server.properties overwrite"
