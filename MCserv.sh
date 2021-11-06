@@ -25,16 +25,17 @@ sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
 
 check_if_ok () {
+	not_ok="${NC}[${RED}NOT OK${NC}] : $2"
 	if [[ $1 == 1 ]]
 	then
-		echo -e "${NC}$2 : [${green}OK${NC}]"
+		echo -e "${NC}[${green}OK${NC}] : $2"
 	elif [[ $1 == 0 ]]
-		echo -e "${NC}$2 : [${RED}NOT OK${NC}]"
+	then
+		echo -e ${not_ok}
 		exit
 	else
-		echo -e "${NC}$2 : [${RED}NOT OK${NC}]"
+		echo -e ${not_ok}
 	fi
-
 }
 
 while read -r p ; do sudo apt-get install -y $p &> /dev/null; done < <(cat << "EOF"
@@ -81,7 +82,7 @@ fi
 bin=$"#!/bin/bash\n\t"
 if [[ -f "server.properties/$Gamemode.txt" ]]
 then
-        ServerProperties=$(cat server.properties/${Gamemode}.txt)
+        ServerProperties="$cat server.properties/${Gamemode}.txt"
         check_if_ok 1 "Checking file"
 else
         check_if_ok 0 "Checking file"
