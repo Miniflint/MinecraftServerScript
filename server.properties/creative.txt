@@ -50,3 +50,4 @@ enable-rcon=false
 motd=A Minecraft Server
 
 #MADE BY MINIFLINT ON GITHUB
+
