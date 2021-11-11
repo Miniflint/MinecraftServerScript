@@ -42,7 +42,7 @@ Xms is the amount of ram the server will start with and Xmx is the maximum
 What the script do is :
   1. Ask you to put a name for the directory and the name of the server
   2. Ask you for the jar file URL, here is a list for you
-    - test
+  - test
   4. install requirements
   5. create a folder in /opt/minecraft+the name you chose
   6. download the jar in this folder
