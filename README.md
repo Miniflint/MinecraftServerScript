@@ -59,7 +59,3 @@ What the script do is :
   7. accept the EULA TERM
   8. write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
   9. write a script to start the server with only 1 command in /opt/scripts and make it executable
-  10. Ask you if you want to start it at every boot
-    10a. if yes : install it at /etc/rc.local
-    10b. if no  : skip this
-  11. Start the server
