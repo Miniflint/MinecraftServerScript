@@ -22,7 +22,7 @@ chmod +x MCserv.sh
 
 executing the script :
 ```
-./MCserv.sh/
+./MCserv.sh
 ```
 
 If you want to change the RAM usage of your server : 
