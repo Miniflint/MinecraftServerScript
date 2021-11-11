@@ -42,7 +42,9 @@ Xms is the amount of ram the server will start with and Xmx is the maximum
 What the script do is :
   1. Ask you to put a name for the directory and the name of the server
   2. Ask you for the jar file URL, here is a list for you
-     - test
+     - [forge](https://maven.minecraftforge.net/net/minecraftforge/forge/1.17.1-37.0.108/forge-1.17.1-37.0.108-installer.jar) Version 1.17.1 (Care when you input the forge version, it redirect to an adfocus page, you have to cut the first part (https://adfoc.us/serve/sitelinks/?id=271228&url=))
+     - [PaperMC](https://papermc.io/api/v2/projects/paper/versions/1.17.1/builds/378/downloads/paper-1.17.1-378.jar) Version 1.17.1 build #378
+     - [Pure vanille](https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar) Version 1.17.1
   4. install requirements
   5. create a folder in /opt/minecraft+the name you chose
   6. download the jar in this folder
