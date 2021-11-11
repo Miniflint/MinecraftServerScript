@@ -2,10 +2,10 @@
 ### What the script do : [Click here](https://github.com/Miniflint/MinecraftServerScript/blob/main/README.md#what-the-script-do)
 Automatically install and configue a minecraft server
 Worked on Raspberry Pi 4 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and tested with forge 1.16.4, PaperMC 1.16.4 and 1.17.1, and Pure vanilla 1.16.4
-### TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)
-### IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565
+### *TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)*
+### *IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565*
 
-###                               *ONLY WORKS ON LINUX*
+###                               **ONLY WORKS ON LINUX**
 Installation of the script :
 
 ```git clone https://github.com/Miniflint/MinecraftServerScript```
@@ -16,21 +16,21 @@ go in the directory :
 
 make the script executable :
 
-```chmod +x MCserv.sh```
+`chmod +x MCserv.sh`
 
 executing the script :
 
-```./MCserv.sh```
+`./MCserv.sh`
 
 If you want to change the RAM usage of your server :
 
-```Nano MCserv.sh```
+`Nano MCserv.sh`
 or
-```Vim MCserv.sh```
+`Vim MCserv.sh`
 
 And change the value of "-Xms[VALUE(1024=1G ram)] and -Xmx[VALUE(2048=2G ram)]
 
-```Startup="java -Xms1024M -Xmx2048M -jar ${PathJar} nogui"```
+`Startup="java -Xms1024M -Xmx2048M -jar ${PathJar} nogui"`
 
 Xms is the amount of ram the server will start with and Xmx is the maximum
 
