@@ -4,7 +4,7 @@ Worked on Raspberry Pi 3 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and te
 # TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)
 # IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565
 
-#                               #### ONLY WORKS ON LINUX ####
+#                               ONLY WORKS ON LINUX
 Installation of the script :
 ```
 git clone https://github.com/Miniflint/MinecraftServerScript
