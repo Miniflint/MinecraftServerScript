@@ -2,8 +2,8 @@
 ### What the script do : [Click here](https://github.com/Miniflint/MinecraftServerScript/blob/main/README.md#what-the-script-do)
 Automatically install and configue a minecraft server
 Worked on Raspberry Pi 4 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and tested with forge 1.16.4, PaperMC 1.16.4 and 1.17.1, and Pure vanilla 1.16.4
-### *TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)*
-### *IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565*
+*TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)*
+*IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565*
 
 ###                               **ONLY WORKS ON LINUX**
 Installation of the script :
