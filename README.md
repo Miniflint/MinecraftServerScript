@@ -37,7 +37,7 @@ And change the value of "-Xms[VALUE(1024=1G ram)] and -Xmx[VALUE(2048=2G ram)]
 
 Xms is the amount of ram the server will start with and Xmx is the maximum
 
-##    What the script do
+## What the script do
 What the script do is :
   1. Ask you to put a name for the directory and the name of the server
   2. Ask you for the jar file URL, here is a list for you
