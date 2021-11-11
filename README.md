@@ -5,7 +5,6 @@ Worked on Raspberry Pi 3 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and te
 # IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565
 
 #                               #### ONLY WORKS ON LINUX ####
-
 Installation of the script :
 ```
 git clone https://github.com/Miniflint/MinecraftServerScript
@@ -39,13 +38,15 @@ Startup="java -Xms1024M -Xmx2048M -jar ${PathJar} nogui"
 ```
 Xms is the amount of ram the server will start with and Xmx is the maximum
 
+##    What the script do
 What the script do is :
   1. Ask you to put a name for the directory and the name of the server
   2. Ask you for the jar file URL, here is a list for you
-  3. install requirements
-  4. create a folder in /opt/minecraft+the name you chose
-  5. download the jar in this folder
-  6. run the jar file
-  7. accept the EULA TERM
-  8. write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
-  9. write a script to start the server with only 1 command in /opt/scripts and make it executable
+    - test
+  4. install requirements
+  5. create a folder in /opt/minecraft+the name you chose
+  6. download the jar in this folder
+  7. run the jar file
+  8. accept the EULA TERM
+  9. write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
+  10. write a script to start the server with only 1 command in /opt/scripts and make it executable
