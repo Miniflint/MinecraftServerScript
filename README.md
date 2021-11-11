@@ -29,7 +29,10 @@ If you want to change the RAM usage of your server :
 ```
 Nano MCserv.sh
 ```
-
+or
+```
+Vim MCserv.sh
+```
 And change the value of "-Xms[VALUE(1024=1G ram)] and -Xmx[VALUE(2048=2G ram)]
 ```
 Startup="java -Xms1024M -Xmx2048M -jar ${PathJar} nogui"
