@@ -41,10 +41,20 @@ What the script do is :
      - [forge](https://maven.minecraftforge.net/net/minecraftforge/forge/1.17.1-37.0.108/forge-1.17.1-37.0.108-installer.jar) Version 1.17.1 (Care when you input the forge version, it redirect to an adfocus page, you have to cut the first part [https://adfoc.us/serve/sitelinks/?id=271228&url=] and only keep the second part : [https://maven.minecraftforge.net/net/minecraftforge/forge/1.17.1-37.0.108/forge-1.17.1-37.0.108-installer.jar])
      - [PaperMC](https://papermc.io/api/v2/projects/paper/versions/1.17.1/builds/378/downloads/paper-1.17.1-378.jar) Version 1.17.1 build #378
      - [Pure vanilla](https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar) Version 1.17.1
-  4. install requirements
-  5. create a folder in /opt/minecraft+the name you chose
-  6. download the jar in this folder
-  7. run the jar file
-  8. accept the EULA TERM
-  9. write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
-  10. write a script to start the server with only 1 command in /opt/scripts and make it executable
+  3. Ask you which game mode you want
+     - Creative
+     - Survival
+     - Hardcore
+  4. Check requirements
+     - if a requirement is missing, install it
+  5. Create a folder in minecraft+the_name_you_gave in /opt
+  6. Check if the scripts folder already exists
+     - if not, create it in /opt/scripts
+  7. Checking if the file in server.properties/(Gamemode_you_Chose).txt exists
+     - if not, stop the script
+  8. Download the jar file that you gave in this folder
+  9. Run the file
+  10. Starting the file to get an error (which leads into accepting the EULA terms)
+  11. Accept the EULA TERM
+  12. Write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
+  13. Write a script to start the server with only 1 command in /opt/scripts and make it executable
