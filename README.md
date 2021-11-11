@@ -6,19 +6,25 @@ Worked on Raspberry Pi 3 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and te
 
 #                               ONLY WORKS ON LINUX
 Installation of the script :
+
 ```git clone https://github.com/Miniflint/MinecraftServerScript```
 go in the directory :
+
 ```cd MinecraftServerScript```
 
 make the script executable :
+
 ```chmod +x MCserv.sh```
 
 executing the script :
+
 ```./MCserv.sh```
 
 If you want to change the RAM usage of your server :
+
 ```Nano MCserv.sh```
 or
+
 ```Vim MCserv.sh```
 
 And change the value of "-Xms[VALUE(1024=1G ram)] and -Xmx[VALUE(2048=2G ram)]
