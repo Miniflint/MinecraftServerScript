@@ -46,7 +46,7 @@ What the script do is :
     2b. https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.4-35.1.37/forge-1.16.4-35.1.37-installer.jar
        2ba. (Be careful when you get the link, it show and adfocus before  and it doesn't work. You have to delete everything before url=(including url=)
     2d. https://cdn.getbukkit.org/spigot/spigot-1.16.5.jar
-#   2e. NOTE : THE SERVER VERSION IS 1.16.5 FOR SPIGOT AND PAPERMC - FORGE IS IN 1.16.4
+    2e. NOTE : THE SERVER VERSION IS 1.16.5 FOR SPIGOT AND PAPERMC - FORGE IS IN 1.16.4
 
   3. install these requirements
     3a. net-tools
