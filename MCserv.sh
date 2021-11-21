@@ -4,8 +4,14 @@ NC='\033[0m' # No Color
 green=`tput setaf 2`
 RED='\033[0;31m'
 cyan='\033[0;36m'
+
+#clear screen
 printf "\033c"
 
+#Get input on :
+#1. Folder name
+#2. Url
+#3. Game mode
 echo -e "${green}Enter The name of your folder  ex : ${NC}PaperMC ${NC}/ ${RED}ForgeServer: ${NC}"
 read DirName
 echo -e "${green}Now please enter the url of the file to download ex : ${NC}https.../.../.../.../file.jar: ${NC}"
@@ -13,6 +19,7 @@ read Url
 echo -e "${green}Enter the gamemode -> ex : ${NC}survival ${RED}/ ${NC}hardcore ${RED}/ ${NC}creative${NC}"
 read Gamemode
 
+#Declare variables
 Name="${DirName}.jar"
 DirPath="/opt/minecraft${DirName}"
 PathJar="/opt/minecraft${DirName}/${Name}"
@@ -21,9 +28,11 @@ scriptPath="/opt/scripts"
 
 set -eu -o pipefail # fail on error , debug all lines
 
+#test if it's on admin
 sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
 
+#fonction to print if it's OK or NOT OK
 check_if_ok () {
 	not_ok="${NC}[${RED}NOT OK${NC}] : $2"
 	if [[ $1 == 1 ]]
@@ -38,15 +47,56 @@ check_if_ok () {
 	fi
 }
 
-while read -r p ; do sudo apt-get install -y $p &> /dev/null; done < <(cat << "EOF"
-    net-tools
-    openjdk-16-jdk
-    curl
-    screen
-EOF
-)
-check_if_ok 1 "installation of pre-requisite"
+if [[ -d $DirPath ]]
+then
+	check_if_ok 0 "This folder already exists"
+fi
+#install requirement. you may need to use another version of open-JDK
+#you may also need multiple java version
+#you can add a package by doing this : package+=("package_name_here")
+#exemple -> package+=("openjdk-13-jdk")
+############## KEEP IN MIND #####################################################
+############## THESE ARE THE MINIMAL REQUIREMENT ################################
+############## NET TOOLS CAN BE DELETED FROM REQUIREMENT, BUT PROBLEMS MAY COME #
+############## CURL IS ESSENTIAL ALONG WITH SCREEN ##############################
+############## THE JAVA VERSION CAN BE MODIFIED #################################
+package=("net-tools" "curl" "screen")
+#java version
+package+=("openjdk-16-jdk")
+
+for packages in "${packages[@]}"; do
+  sudo apt-get install -y "$packages" &> /dev/null
+done
+
+sleep 1
+#check pre-requisite
+for packages in ${package[@]}
+do
+	if [[ `apt-cache search --names-only "$packages"` ]]
+	then
+		check_if_ok 1 "installation of pre-requisite : $packages"
+	else
+		check_if_ok 2 "installation of pre-requisite : $packages"
+		sudo apt-get install -y "$packages" &> /dev/null
+		sleep 1
+		if [[ `apt-cache search --names-only "$packages"` ]]
+		then
+			check_if_ok 1 "installation of pre-requisite : $packages"
+		else
+			check_if_ok 0 "installation of pre-requisite : $packages"
+		fi
+	fi
+done
+
 sleep 2
+
+if [[ -d /opt ]]
+then
+	check_if_ok 1 "Checking /opt"
+else
+	check_if_ok 2 "Checking /opt"
+	mkdir "/opt"
+fi
 
 mkdir ${DirPath}
 sleep 2
@@ -55,14 +105,6 @@ then
 	check_if_ok 1 "Folder Creation"
 else
 	check_if_ok 0 "Folder Creation"
-fi
-
-if [[ -d /opt ]]
-then
-	check_if_ok 1 "Checking /opt"
-else
-	check_if_ok 2 "Checking /opt"
-	mkdir "/opt"
 fi
 
 if [[ -d ${scriptPath} ]]
