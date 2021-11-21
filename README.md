@@ -17,13 +17,14 @@ go in the directory :
 
 ```cd MinecraftServerScript```
 
-make the script executable :
-
-`chmod +x MCserv.sh`
-
 executing the script :
 
 `./MCserv.sh`
+
+if you can't execute the script :
+make the script executable :
+
+`chmod +x MCserv.sh`
 
 If you want to change the RAM usage of your server :
 
