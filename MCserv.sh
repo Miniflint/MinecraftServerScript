@@ -8,6 +8,10 @@ cyan='\033[0;36m'
 #clear screen
 printf "\033c"
 
+#############################################################################################################################
+############################## BY USING THIS SCRIPT YOU ACCEPT MOJANG'S EULA ################################################
+#############################################################################################################################
+
 #Get input on :
 #1. Folder name
 #2. Url
@@ -77,12 +81,14 @@ do
 		check_if_ok 1 "installation of pre-requisite : $packages"
 	else
 		check_if_ok 2 "installation of pre-requisite : $packages"
+		#try resintallation if fail on first try
 		sudo apt-get install -y "$packages" &> /dev/null
 		sleep 1
 		if [[ `apt-cache search --names-only "$packages"` ]]
 		then
 			check_if_ok 1 "installation of pre-requisite : $packages"
 		else
+			#exit if fail the second time
 			check_if_ok 0 "installation of pre-requisite : $packages"
 		fi
 	fi
@@ -90,6 +96,7 @@ done
 
 sleep 2
 
+#Check for the /opt directory (should exists by default. stand for "optional")
 if [[ -d /opt ]]
 then
 	check_if_ok 1 "Checking /opt"
@@ -98,6 +105,7 @@ else
 	mkdir "/opt"
 fi
 
+#make the directory that will have all the files
 mkdir ${DirPath}
 sleep 2
 if [[ -d ${DirPath} ]]
@@ -107,20 +115,25 @@ else
 	check_if_ok 0 "Folder Creation"
 fi
 
+#check if the script path already exists
 if [[ -d ${scriptPath} ]]
 then
         check_if_ok 1 "'Scripts' folder"
 else
         check_if_ok 2 "'Scripts' folder"
+	#on fail, try to do it again
         mkdir ${scriptPath}
         sleep 3
         if [[ -d ${scriptPath} ]]
         then
                 check_if_ok 1 "Creation of the 'scripts' folder"
         else
+		#exit on fail number 2
                 check_if_ok 0 "Creation of the 'scripts' folder"
         fi
 fi
+
+#check for the server.properties/gamemode file
 bin=$"#!/bin/bash\n\t"
 if [[ -f "server.properties/$Gamemode.txt" ]]
 then
@@ -130,6 +143,7 @@ else
         check_if_ok 0 "Checking file"
 fi
 
+#downloading url
 curl -o ${PathJar} ${Url} --silent
 if [[ -f ${PathJar} ]]
 then
@@ -138,6 +152,9 @@ else
 	check_if_ok 0 "Download URL"
 fi
 
+
+############### IF URL IS FORGE STARTING IS DIFFERENT #########
+############### I DON'T KNOW IF IT STILL WORKS ################
 cd ${DirPath}
 if [[ $Url == *"forge"* ]]
 then
@@ -155,6 +172,8 @@ then
 else
 	${Startup} &> /dev/null
 fi
+
+#Checking server.properties file
 if [[ -f "${DirPath}/server.properties" ]]
 then
 	check_if_ok 1 "Starting the Server File"
@@ -162,9 +181,12 @@ else
 	check_if_ok 0 "Starting the Server File"
 fi
 
+#accepting eula terms
 sed -i 's/eula=false/eula=true/' eula.txt
 check_if_ok 1 "Acceptiing EULA terms"
 
+
+#writing server.properties in server.properties
 echo "${ServerProperties}" > server.properties
 if [[ -s server.properties ]]
 then
@@ -173,6 +195,7 @@ else
 	check_if_ok 0 "Server.properties overwrite"
 fi
 
+#writing the script
 bin=$"#!/bin/bash\n\t"
 echo -e "${bin} cd ${DirPath} && ${Startup}" > "${scriptPath}/${DirName}.sh"
 chmod +x ${scriptPath}/${DirName}.sh
@@ -196,5 +219,5 @@ fi
 
 sleep 2
 cd ${scriptPath}
-echo -e "${cyan}THANKS FOR DOWNLOADING${NC}"
 check_if_ok 1 "Having fun"
+echo -e "${cyan}THANKS FOR DOWNLOADING${NC}"
