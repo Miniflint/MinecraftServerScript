@@ -30,8 +30,14 @@ path_jar="${dir_path}/${name}"
 startup="java -Xms4G -Xmx5G -jar ${path_jar} nogui "
 script_path="/opt/scripts"
 
+
+#install requirement. you may need to use another version of open-JDK
+#you may also need multiple java version
+#you can add a package by doing this : package+=("package_name_here")
+#exemple -> package+=("openjdk-13-jdk")
+
 package=("net-tools" "curl" "screen")
-package+=("openjdk-16-jdk", "openjdk-17-jdk-headless")
+package+=("openjdk-16-jdk")
 #test if it's on admin
 sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
@@ -71,21 +77,6 @@ then
 	check_if_ok 2 "This folder already exists"
 fi
 
-#install requirement. you may need to use another version of open-JDK
-#you may also need multiple java version
-#you can add a package by doing this : package+=("package_name_here")
-#exemple -> package+=("openjdk-13-jdk")
-############## KEEP IN MIND #####################################################
-############## THESE ARE THE MINIMAL REQUIREMENT ################################
-############## NET TOOLS CAN BE DELETED FROM REQUIREMENT, BUT PROBLEMS MAY COME #
-############## CURL IS ESSENTIAL ALONG WITH SCREEN ##############################
-############## THE JAVA VERSION CAN BE MODIFIED #################################
-
-package=("net-tools" "curl" "screen")
-
-#java version
-package+=("openjdk-16-jdk")
-package+=("openjdk-17-jdk-headless")
 
 for packages in "${packages[@]}"
 do
