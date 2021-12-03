@@ -30,31 +30,45 @@ path_jar="${dir_path}/${name}"
 startup="java -Xms4G -Xmx5G -jar ${path_jar} nogui "
 script_path="/opt/scripts"
 
-set -eu -o pipefail # fail on error , debug all lines
-
+package=("net-tools" "curl" "screen")
+package+=("openjdk-16-jdk", "openjdk-17-jdk-headless")
 #test if it's on admin
 sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
 
 #fonction to print if it's OK or NOT OK
 check_if_ok () {
-	not_ok="${no_color}[${red}NOT OK${no_color}] : $2"
-	ok="${no_color}[${green}OK${no_color}] : $2"
+	local not_ok="${no_color}[${red}NOT OK${no_color}] : $2"
+	local ok="${no_color}[${green}OK${no_color}] : $2"
 	if [[ $1 == 1 ]]
 	then
 		echo -e ${ok}
 	elif [[ $1 == 0 ]]
 	then
 		echo -e ${not_ok}
-		exit
 	else
 		echo -e ${not_ok}
+		exit
 	fi
 }
 
+read_file () {
+	local input="log.txt"
+	echo -e "\n${red}Reason of the fail : \n${no_color}"
+	while IFS= read -r line
+	do
+		echo "$line"
+	done < "$input"
+	echo ""
+	rm "log.txt"
+	exit
+}
+
+test $? -eq 0 || check_if_ok 2 "Start with sudo privileges"
+
 if [[ -d $dir_path ]]
 then
-	check_if_ok 0 "This folder already exists"
+	check_if_ok 2 "This folder already exists"
 fi
 
 #install requirement. you may need to use another version of open-JDK
@@ -71,9 +85,11 @@ package=("net-tools" "curl" "screen")
 
 #java version
 package+=("openjdk-16-jdk")
+package+=("openjdk-17-jdk-headless")
 
-for packages in "${packages[@]}"; do
-  sudo apt-get install -y "$packages" &> /dev/null
+for packages in "${packages[@]}"
+do
+	sudo apt-get install -y "$packages" &> /dev/null
 done
 sleep 1
 
@@ -84,45 +100,45 @@ do
 	then
 		check_if_ok 1 "installation of pre-requisite -> $packages"
 	else
-		check_if_ok 2 "installation of pre-requisite -> $packages"
+		check_if_ok 0 "installation of pre-requisite -> $packages"
 		#try resintallation if fail on first try
-		sudo apt-get install -y "$packages" &> /dev/null
+		sudo apt-get install -y "$packages" &> log.txt
 		sleep 1
 		if [[ `apt-cache search --names-only "$packages"` ]]
 		then
 			check_if_ok 1 "re-installation of pre-requisite -> $packages"
 		else
-			#exit if fail the second time
 			check_if_ok 0 "re-installation of pre-requisite -> $packages"
+			read_file
 		fi
 	fi
 done
-sleep 2
 
+sleep 1
 #Check for the /opt directory (should exists by default. stand for "optional")
 if [[ -d /opt ]]
 then
 	check_if_ok 1 "Checking /opt"
 else
-	check_if_ok 2 "Checking /opt"
+	check_if_ok 0 "Checking /opt"
 	mkdir "/opt"
-	sleep 2
+	sleep 1
 	if [[ -d /opt ]]
 	then
 		check_if_ok 1 "Checking /opt"
 	else
-		check_if_ok 0 "Checking /opt"
+		check_if_ok 2 "Checking /opt"
 	fi
 fi
 
 #make the directory that will have all the files
 mkdir ${dir_path}
-sleep 2
+sleep 1
 if [[ -d ${dir_path} ]]
 then
 	check_if_ok 1 "Folder Creation"
 else
-	check_if_ok 0 "Folder Creation"
+	check_if_ok 2 "Folder Creation"
 fi
 
 #check if the script path already exists
@@ -130,16 +146,16 @@ if [[ -d ${script_path} ]]
 then
         check_if_ok 1 "'Scripts' folder"
 else
-        check_if_ok 2 "'Scripts' folder"
+        check_if_ok 0 "'Scripts' folder"
 	#on fail, try to do it again
         mkdir ${script_path}
-        sleep 2
+        sleep 1
         if [[ -d ${script_path} ]]
         then
                 check_if_ok 1 "Creation of the 'scripts' folder"
         else
 		#exit on fail number 2
-                check_if_ok 0 "Creation of the 'scripts' folder"
+                check_if_ok 2 "Creation of the 'scripts' folder"
         fi
 fi
 
@@ -149,7 +165,7 @@ if [[ -f "server.properties/$game_mode.txt" ]]
 then
         check_if_ok 1 "Checking file"
 else
-        check_if_ok 0 "Checking file"
+        check_if_ok 2 "Checking file"
 fi
 
 #downloading url
@@ -158,7 +174,9 @@ if [[ -f ${path_jar} ]]
 then
 	check_if_ok 1 "Download URL"
 else
-	check_if_ok 0 "Download URL"
+	check_if_ok 2 "Download URL"
+	curl -o ${path_jar} ${url} >> log.txt
+	read_file
 fi
 
 ############### IF URL IS FORGE STARTING IS DIFFERENT #########
@@ -166,33 +184,35 @@ fi
 
 if [[ $url == *"forge"* ]]
 then
-	java -jar ${path_jar} --installServer &> /dev/null
+	java -jar ${path_jar} --installServer &> log.txt
 else
-	java -jar ${path_jar} &> /dev/null
+	java -jar ${path_jar} &> log.txt
 fi
 if [ $? -eq 0 ]
 then
-   check_if_ok 0 "Un-jaring the file"
+	check_if_ok 1 "Un-jaring the file"
 else
-   check_if_ok 1 "Un-Jaring the file\n fail reason: $?"
+	check_if_ok 0 "Un-Jaring the file"
+	read_file
 fi
 
-${startup} &> /dev/null
-
+${startup} &> log.txt
 #Checking server.properties file
 if [[ -f "${dir_path}/server.properties" ]]
 then
-	check_if_ok 1 "Starting the Server File"
+	check_if_ok 1 "Starting the server"
 else
-	check_if_ok 0 "Starting the Server File"
+	check_if_ok 0 "Starting the server"
+	read_file
 fi
 
 #accepting eula terms
 sed -i 's/eula=false/eula=true/' eula.txt
-if [ $? -eq 0 ]; then
-   check_if_ok 0 "Accepting EULA terms"
+if [ $? -ne 0 ]
+then
+	check_if_ok 1 "Accepting EULA terms"
 else
-   check_if_ok 1 "Accepting EULA terms"
+	check_if_ok 2 "Accepting EULA terms"
 fi
 
 
@@ -203,32 +223,29 @@ if [[ -s server.properties ]]
 then
 	check_if_ok 1 "Server.properties overwrite"
 else
-	check_if_ok 0 "Server.properties overwrite"
+	check_if_ok 2 "Server.properties overwrite"
 fi
 
 #writing the script
 bin=$"#!/bin/bash\n\t"
 echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
 chmod +x ${script_path}/${dir_name}.sh
-sleep 2
+sleep 1
 
 if [[ -f ${script_path}/${dir_name}.sh ]]
 then
 	check_if_ok 1 "Creation of the script"
 else
-	check_if_ok 2 "Creation of the script"
+	check_if_ok 0 "Creation of the script"
 	echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
 	if [[ -f ${script_path}/${dir_name}.sh ]]
 	then
         	check_if_ok 1 "Creation of the script"
 	else
         	check_if_ok 2 "Creation of the script"
-		echo "can't create the script"
-		exit
 	fi
 fi
 
-sleep 2
-cd ${script_path}
+sleep 1
 check_if_ok 1 "Having fun"
-echo -e "${cyan}THANKS FOR DOWNLOADING${no_color}"
+echo -e "${no_color}THANKS FOR DOWNLOADING\nTo start the server : cd ${script_path} + ./${dir_name}.sh"
