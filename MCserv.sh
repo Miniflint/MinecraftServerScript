@@ -26,7 +26,7 @@ read game_mode
 #Declare variables
 name="${dir_name}.jar"
 dir_path="/opt/minecraft${dir_name}"
-path_jar="/opt/minecraft${dir_name}/${name}"
+path_jar="${dir_path}/${name}"
 startup="java -Xms4G -Xmx5G -jar ${path_jar} nogui "
 script_path="/opt/scripts"
 
@@ -161,26 +161,23 @@ else
 	check_if_ok 0 "Download URL"
 fi
 
-
 ############### IF URL IS FORGE STARTING IS DIFFERENT #########
 ############### I DON'T KNOW IF IT STILL WORKS ################
-cd ${dir_path}
+
 if [[ $url == *"forge"* ]]
 then
 	java -jar ${path_jar} --installServer &> /dev/null
 else
-	java -jar ${path_jar} &> /dev/null 
+	java -jar ${path_jar} &> /dev/null
 fi
-check_if_ok 1 "Un-jaring the file"
-
-if [[ $url == *"forge"* ]]
+if [ $? -eq 0 ]
 then
-	var=$(/bin/find ${dir_path} -maxdepth 1 -name "forge-1.*.jar")
-	echo -e "${red}${var}\n${dir_path}"
-	cd ${dir_path} && java  -Xms1024M -Xmx2000M -jar ${var} nogui #    cd /opt/minecraft && java -Xms1024M -Xmx2000M -jar /opt/minecraft/forge-1.12.2-14.23.5.2854.jar nogui 
+   check_if_ok 0 "Un-jaring the file"
 else
-	${startup} &> /dev/null
+   check_if_ok 1 "Un-Jaring the file\n fail reason: $?"
 fi
+
+${startup} &> /dev/null
 
 #Checking server.properties file
 if [[ -f "${dir_path}/server.properties" ]]
@@ -192,12 +189,16 @@ fi
 
 #accepting eula terms
 sed -i 's/eula=false/eula=true/' eula.txt
-check_if_ok 1 "Acceptiing EULA terms"
+if [ $? -eq 0 ]; then
+   check_if_ok 0 "Accepting EULA terms"
+else
+   check_if_ok 1 "Accepting EULA terms"
+fi
 
 
 #writing server.properties in server.properties
+rm "${dir_path}/server.properties"
 cp "server.properties/$game_mode.txt" "${dir_path}/server.properties" 
-echo "${ServerProperties}" > server.properties
 if [[ -s server.properties ]]
 then
 	check_if_ok 1 "Server.properties overwrite"
