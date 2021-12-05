@@ -68,7 +68,7 @@ What the script do is :
   12. Write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
   13. Write a script to start the server with only 1 command in /opt/scripts and make it executable
 
-### VIM TIPS
+## VIM TIPS
   Enter vim :
     - vim [File]
   1. `i` ->   to enter insert mode (write in the file)
