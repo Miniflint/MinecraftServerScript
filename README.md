@@ -5,7 +5,7 @@ Worked on Raspberry Pi 4 B+ using Ubuntu Server 20.04 Using Ssh via PuTTY and te
 
 TO PLAY ON THE SERVER LOCALLY, IT'S THE IP OF YOUR SERVER : ifconfig -> (192.168.x.x generally)
 
-IF YOU WANT TO PLAY WITH FRIENDS, OPEN THE PORT 25565 ON YOUR ROUTER AND ALLOW TRAFIC FROM PORT 25565
+IF YOU WANT TO PLAY WITH FRIENDS, OPEN A PORT ON YOUR ROUTER AND ALLOW TRAFIC ON THIS PORT
 
 ###                               **ONLY WORKS ON LINUX**
 ## Usage
@@ -22,6 +22,7 @@ executing the script :
 `./MCserv.sh`
 
 if you can't execute the script :
+
 make the script executable :
 
 `chmod +x MCserv.sh`
@@ -31,6 +32,10 @@ If you want to change the RAM usage of your server :
 `Nano MCserv.sh`
 or
 `Vim MCserv.sh`
+
+P.S :
+
+Vim tips : [click here](https://github.com/Miniflint/MinecraftServerScript/blob/main/README.md#vim-tips)
 
 And change the value of "-Xms[VALUE(1024=1G ram)] and -Xmx[VALUE(2048=2G ram)]
 
@@ -62,3 +67,15 @@ What the script do is :
   11. Accept the EULA TERM
   12. Write server.properties (/opt/minecraft+TheNameYouChoose)/server.properties
   13. Write a script to start the server with only 1 command in /opt/scripts and make it executable
+
+## VIM TIPS
+  Enter vim :
+    - vim [File]
+  1. `i` ->   to enter insert mode (write in the file)
+  2. `esc` -> exit current mode
+  3. `:w`  -> to save
+  4. `:q`  -> to quit
+  5. `:wq` -> save and quit
+  
+  Recap :
+  Enter the file, press i, modify it, save and quit
