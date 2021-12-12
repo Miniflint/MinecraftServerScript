@@ -29,8 +29,9 @@ dir_path="/opt/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
 startup="java -Xms4G -Xmx5G -jar ${path_jar} nogui "
 script_path="/opt/scripts"
+dir_script=`pwd`
 
-
+echo $dir_script
 #install requirement. you may need to use another version of open-JDK
 #you may also need multiple java version
 #you can add a package by doing this : package+=("package_name_here")
@@ -172,20 +173,12 @@ fi
 
 ############### IF URL IS FORGE STARTING IS DIFFERENT #########
 ############### I DON'T KNOW IF IT STILL WORKS ################
-
+cd ${dir_path}
 if [[ $url == *"forge"* ]]
 then
 	java -jar ${path_jar} --installServer &> log.txt
-else
-	java -jar ${path_jar} &> log.txt
 fi
-if [ $? -eq 0 ]
-then
-	check_if_ok 1 "Un-jaring the file"
-else
-	check_if_ok 0 "Un-Jaring the file"
-	read_file
-fi
+check_if_ok 1 "Un-jaring the file"
 
 ${startup} &> log.txt
 #Checking server.properties file
@@ -197,25 +190,21 @@ else
 	read_file
 fi
 
+
 #accepting eula terms
 sed -i 's/eula=false/eula=true/' eula.txt
-if [ $? -ne 0 ]
-then
-	check_if_ok 1 "Accepting EULA terms"
-else
-	check_if_ok 2 "Accepting EULA terms"
-fi
-
+check_if_ok 1 "Accepting EULA terms"
 
 #writing server.properties in server.properties
 rm "${dir_path}/server.properties"
-cp "server.properties/$game_mode.txt" "${dir_path}/server.properties" 
+cp "$dir_script/server.properties/$game_mode.txt" "${dir_path}/server.properties" 
 if [[ -s server.properties ]]
 then
 	check_if_ok 1 "Server.properties overwrite"
 else
 	check_if_ok 2 "Server.properties overwrite"
 fi
+
 
 #writing the script
 bin=$"#!/bin/bash\n\t"
