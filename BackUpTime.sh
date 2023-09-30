@@ -7,6 +7,8 @@ cyan='\033[0;36m'
 printf "\033c"
 now="$(date +'%d-%m')"
 
+
+
 echo -e "${green}Enter the full path of the folder to backup, ex : ${NC}/opt/minecraftPaperMCServer"
 read PathToBackup
 [ ! -d "${PathToBackup}" ] && echo -e "" && echo -e "${RED}ERROR : Directory '${PathToBackup}' doesn't exist." && echo -e "${NC}" && exit
@@ -17,11 +19,12 @@ read DirPath
 [ ! -d "${DirPath}" ] && echo -e "" && echo -e "${RED}ERROR : Directory '${DirPath}' doesn't exist." && echo -e "${NC}" && exit
 echo -e "${cyan}"
 tar -czvf "${DirPath}/${Name}${now}.tar.gz" "${PathToBackup}"
+
 sleep 3
-if [ -f "${DirPath}/${Name}${now}.tar.gz" ]
+if [ -f "${1}/${2}${now}.tar.gz" ]
 then
 	echo -e "" && echo -e "${NC}back-uping the world : [${green}OK${NC}]"
 else
-	 echo -e "" && echo -e "${NC}back-uping the world : [${RED}NOT OK${NC}]."
+	echo -e "" && echo -e "${NC}back-uping the world : [${RED}NOT OK${NC}]."
 fi
 
