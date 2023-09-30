@@ -13,17 +13,20 @@ GREEN	= '\033[0;32m'
 def print_color(output:str):
 	print(f"[{GREEN}OK{NC}]: {CYAN}{output}{NC}")
 
-def handle_error(error_str:str, exit_code:int) -> None:
-	print(RED + error_str + NC)
+def handle_error(error_str:str, exit_code:int) -> None:	
+	print(f"[{RED}NOT OK{NC}]: {RED}{error_str}{NC}")
 	exit(exit_code)
-
-def check_backup_done() -> None:
-	sleep(1)
 
 def check_exist_dir(pathdir:str) -> bool:
 	if (os.path.isdir(pathdir) or os.path.isfile(pathdir)):
 		return True
 	return False
+
+def check_backup_done(backup_fullpath) -> None:
+	sleep(1)
+	if not check_exist_dir(backup_fullpath):
+		handle_error(f"Couldn't find {backup_fullpath} file")
+	print_color("Archive has been created")
 
 def display_available_dir() -> None:
 	dirs = os.listdir(BASE_DIR)
@@ -81,10 +84,11 @@ def get_required_dir_file(path_dir:str):
 	return " ".join(checking_dirs)
 
 def exec_tar(backup_dir:str, backup_name:str, folders_to_backup:str) -> bool:
-	backup_fullpath = backup_dir + backup_name + "-" + str(NOW) + "tar.gz"
+	backup_fullpath = backup_dir + "/" + backup_name + "-" + str(NOW) + "tar.gz"
 	command = f"tar -czvf {backup_fullpath} {folders_to_backup}"
 	hide_output = " > /dev/null 2>&1"
 	os.system(command + hide_output)
+	check_backup_done(backup_fullpath)
 
 def main():
 	print("\033c", end="")
