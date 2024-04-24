@@ -38,7 +38,8 @@ echo $dir_script
 #exemple -> package+=("openjdk-13-jdk")
 
 package=("net-tools" "curl" "screen")
-package+=("openjdk-16-jdk")
+package+=("openjdk-17-jre-headless")
+package+=("openjdk-19-jre-headless")
 #test if it's on admin
 sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
@@ -78,29 +79,24 @@ then
 	check_if_ok 2 "This folder already exists"
 fi
 
-
-for packages in "${packages[@]}"
-do
-	sudo apt-get install -y "$packages" &> /dev/null
-done
 sleep 1
-
 #check pre-requisite
-for packages in ${package[@]}
+for pkg in ${package[@]}
 do
-	if [[ `apt-cache search --names-only "$packages"` ]]
+	sudo apt-get install -y "$pkg" &> /dev/null
+	if [[ `apt-cache search --names-only "$pkg"` ]]
 	then
-		check_if_ok 1 "installation of pre-requisite -> $packages"
+		check_if_ok 1 "installation of pre-requisite -> $pkg"
 	else
-		check_if_ok 0 "installation of pre-requisite -> $packages"
+		check_if_ok 0 "installation of pre-requisite -> $pkg"
 		#try resintallation if fail on first try
-		sudo apt-get install -y "$packages" &> log.txt
+		sudo apt-get install -y "$pkg" &> log.txt
 		sleep 1
 		if [[ `apt-cache search --names-only "$packages"` ]]
 		then
-			check_if_ok 1 "re-installation of pre-requisite -> $packages"
+			check_if_ok 1 "re-installation of pre-requisite -> $pkg"
 		else
-			check_if_ok 0 "re-installation of pre-requisite -> $packages"
+			check_if_ok 0 "re-installation of pre-requisite -> $pkg"
 			read_file
 		fi
 	fi
@@ -171,6 +167,27 @@ else
 	read_file
 fi
 
+#writing the script
+bin=$"#!/bin/bash\n\t"
+echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
+chmod +x ${script_path}/${dir_name}.sh
+cp ${script_path}/${dir_name}.sh ${dir_path}/
+sleep 1
+
+if [[ -f ${script_path}/${dir_name}.sh ]]
+then
+	check_if_ok 1 "Creation of the script"
+else
+	check_if_ok 0 "Creation of the script"
+	echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
+	if [[ -f ${script_path}/${dir_name}.sh ]]
+	then
+        	check_if_ok 1 "Creation of the script"
+	else
+        	check_if_ok 2 "Creation of the script"
+	fi
+fi
+
 ############### IF URL IS FORGE STARTING IS DIFFERENT #########
 ############### I DON'T KNOW IF IT STILL WORKS ################
 cd ${dir_path}
@@ -205,27 +222,34 @@ else
 	check_if_ok 2 "Server.properties overwrite"
 fi
 
+#create service
+systemctl_var="""
+[Unit]
+Description=Minecraft Server ${dir_name}
+After=network.target
 
-#writing the script
-bin=$"#!/bin/bash\n\t"
-echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
-chmod +x ${script_path}/${dir_name}.sh
-sleep 1
+[Service]
+User=root
+Group=root
+WorkingDirectory=${dir_script}
+ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${dir_script}/${dir_name}.sh
+ExecStop=/bin/bash -c 'screen -S service_${dir_name} -p 0 -X stuff \"stop\"'
+Type=simple
+RemainAfterExit=yes
+Restart=on-failure
 
-if [[ -f ${script_path}/${dir_name}.sh ]]
+[Install]
+WantedBy=multi-user.target
+"""
+echo ${systemctl_var} > ${dir_path}/${dir_name}.service
+if [[ -s ${dir_path}/${dir_name}.service ]]
 then
-	check_if_ok 1 "Creation of the script"
+	check_if_ok 1 "Service file creation"
 else
-	check_if_ok 0 "Creation of the script"
-	echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
-	if [[ -f ${script_path}/${dir_name}.sh ]]
-	then
-        	check_if_ok 1 "Creation of the script"
-	else
-        	check_if_ok 2 "Creation of the script"
-	fi
+	check_if_ok 2 "Service file creation"
 fi
 
 sleep 1
 check_if_ok 1 "Having fun"
 echo -e "${no_color}THANKS FOR DOWNLOADING\nTo start the server : cd ${script_path} + ./${dir_name}.sh"
+echo -e "${no_color}To create the service (start server on reboot): sudo cp ${dir_script}/${dir_name}.service /etc/systemd/system/"

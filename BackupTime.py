@@ -1,6 +1,8 @@
 import os
 from datetime import date
 from time import sleep
+import cal_size
+
 
 NOW = date.today()
 BASE_DIR = "/opt/"
@@ -20,6 +22,9 @@ def print_color(output:str):
 def print_not_ok(output:str) -> None:
 	print(f"[{RED}NOT OK{NC}]: {RED}{output}{NC}")
 
+def print_info(output:str) -> None:
+	print(f"[{CYAN}INFO{NC}]: {YELLOW}{output}{NC}")
+
 def handle_error(error_str:str, exit_code:int) -> None:	
 	print_not_ok(error_str)
 	exit(exit_code)
@@ -34,7 +39,7 @@ def check_backup_done(backup_fullpath) -> None:
 	if check_exist_dir(backup_fullpath):
 		print_color(f"Archive '{backup_fullpath}' has been created")
 		return
-	handle_error(f"Couldn't find {backup_fullpath} file")
+	handle_error(f"Couldn't find {backup_fullpath} file", 1)
 
 def display_available_dir() -> None:
 	dirs = os.listdir(BASE_DIR)
@@ -132,7 +137,17 @@ def main() -> int:
 		files_to_tar = get_required_dir_file(path_dir)
 	else:
 		files_to_tar = path_dir
-	exec_tar(backup_dir, backup_name, files_to_tar)
+	p_id = os.fork()
+
+	if p_id != 0:
+		exec_tar(backup_dir, backup_name, files_to_tar)
+	else:
+		sleep(1)
+		print_info("Estimating the time left")
+		size_file = cal_size.get_folder_size(files_to_tar.split(" "))
+		backup_fullpath = backup_dir + backup_name + "-" + str(NOW) + "tar.gz"
+		cal_size.spy_tar_progress_bar(size_file, backup_fullpath)
+		
 	print_color("THANKS FOR USING THIS PROGRAM")
 	return (0)
 
