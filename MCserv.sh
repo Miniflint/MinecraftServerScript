@@ -34,7 +34,7 @@ then
 else
 	startup="java -Xms4G -Xmx4G -jar ${path_jar} nogui "
 fi
-script_path="/${default_folder_path}/scripts"
+script_path="${default_folder_path}/scripts"
 dir_script=`pwd`
 
 echo $dir_script
