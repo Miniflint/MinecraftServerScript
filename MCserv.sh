@@ -26,9 +26,14 @@ read game_mode
 #Declare variables
 name="${dir_name}.jar"
 default_folder_path="/home/$USER/servers_folder"
-dir_path="/${default_folder_path}/minecraft${dir_name}"
+dir_path="${default_folder_path}/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
-startup="java -Xms4G -Xmx4G -jar ${path_jar} nogui "
+if [[ $url == *"forge"* ]]
+then
+	startup="./run.sh nogui "
+else
+	startup="java -Xms4G -Xmx4G -jar ${path_jar} nogui "
+fi
 script_path="/${default_folder_path}/scripts"
 dir_script=`pwd`
 
@@ -178,13 +183,10 @@ check_if_ok 1 "Un-jaring the file"
 
 #writing the script
 bin=$"#!/bin/bash\n\t"
-if [[ $url == *"forge"* ]]
+echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh" 
+chmod +x ${script_path}/${dir_name}.sh
+if [[ $url != *"forge"* ]]
 then
-	echo -e "${bin} cd ${dir_path} && ./run.sh nogui" > "${script_path}/${dir_name}.sh" 
-	chmod +x ${script_path}/${dir_name}.sh
-else
-	echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
-	chmod +x ${script_path}/${dir_name}.sh
 	cp ${script_path}/${dir_name}.sh ${dir_path}/
 fi
 sleep 1
