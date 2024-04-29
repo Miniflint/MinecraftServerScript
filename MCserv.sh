@@ -206,19 +206,7 @@ else
 fi
 check_if_ok 1 "Accepting EULA terms"
 
-${startup} &> log.txt
-#Checking server.properties file
-if [[ -f "${dir_path}/server.properties" ]]
-then
-	check_if_ok 1 "Starting the server"
-else
-	check_if_ok 0 "Starting the server"
-	read_file
-fi
-
-
 #writing server.properties in server.properties
-rm "${dir_path}/server.properties"
 cp "$dir_script/server.properties/$game_mode.txt" "${dir_path}/server.properties" 
 if [[ -s server.properties ]]
 then
