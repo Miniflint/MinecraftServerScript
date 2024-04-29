@@ -25,10 +25,11 @@ read game_mode
 
 #Declare variables
 name="${dir_name}.jar"
-dir_path="/opt/minecraft${dir_name}"
+default_folder_path="/home/ubuntu/servers_folder"
+dir_path="/${default_folder_path}/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
 startup="java -Xms4G -Xmx5G -jar ${path_jar} nogui "
-script_path="/opt/scripts"
+script_path="/${default_folder_path}/scripts"
 dir_script=`pwd`
 
 echo $dir_script
@@ -40,6 +41,8 @@ echo $dir_script
 package=("net-tools" "curl" "screen")
 package+=("openjdk-17-jre-headless")
 package+=("openjdk-19-jre-headless")
+package+=("openjdk-21-jre-headless")
+package+=("openjdk-22-jre-headless")
 #test if it's on admin
 sudo -n true
 test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
@@ -103,19 +106,19 @@ do
 done
 
 sleep 1
-#Check for the /opt directory (should exists by default. stand for "optional")
-if [[ -d /opt ]]
+#Check for the default_directory (/opt) (should exists by default. stand for "optional")
+if [[ -d ${default_folder_path} ]]
 then
-	check_if_ok 1 "Checking /opt"
+	check_if_ok 1 "Checking ${default_folder_path}"
 else
-	check_if_ok 0 "Checking /opt"
-	mkdir "/opt"
+	check_if_ok 0 "Checking ${default_folder_path}"
+	mkdir "${default_folder_path}"
 	sleep 1
-	if [[ -d /opt ]]
+	if [[ -d ${default_folder_path} ]]
 	then
-		check_if_ok 1 "Checking /opt"
+		check_if_ok 1 "Creating ${default_folder_path}"
 	else
-		check_if_ok 2 "Checking /opt"
+		check_if_ok 2 "Creating ${default_folder_path}"
 	fi
 fi
 
