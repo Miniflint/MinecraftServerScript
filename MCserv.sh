@@ -167,6 +167,15 @@ else
 	read_file
 fi
 
+############### IF URL IS FORGE STARTING IS DIFFERENT #########
+############### I DON'T KNOW IF IT STILL WORKS ################
+cd ${dir_path}
+if [[ $url == *"forge"* ]]
+then
+	java -jar ${path_jar} --installServer &> log.txt
+fi
+check_if_ok 1 "Un-jaring the file"
+
 #writing the script
 if [[ $url == *"forge"* ]]
 then
@@ -185,14 +194,6 @@ else
 	check_if_ok 0 "Creation of the script"
 fi
 
-############### IF URL IS FORGE STARTING IS DIFFERENT #########
-############### I DON'T KNOW IF IT STILL WORKS ################
-cd ${dir_path}
-if [[ $url == *"forge"* ]]
-then
-	java -jar ${path_jar} --installServer &> log.txt
-fi
-check_if_ok 1 "Un-jaring the file"
 
 ${startup} &> log.txt
 #Checking server.properties file
