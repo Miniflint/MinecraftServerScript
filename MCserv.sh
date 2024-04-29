@@ -197,6 +197,9 @@ else
 	check_if_ok 0 "Creation of the script"
 fi
 
+#accepting eula terms
+sed -i 's/eula=false/eula=true/' eula.txt
+check_if_ok 1 "Accepting EULA terms"
 
 ${startup} &> log.txt
 #Checking server.properties file
@@ -208,10 +211,6 @@ else
 	read_file
 fi
 
-
-#accepting eula terms
-sed -i 's/eula=false/eula=true/' eula.txt
-check_if_ok 1 "Accepting EULA terms"
 
 #writing server.properties in server.properties
 rm "${dir_path}/server.properties"
