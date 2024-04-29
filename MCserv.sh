@@ -198,7 +198,12 @@ else
 fi
 
 #accepting eula terms
-sed -i 's/eula=false/eula=true/' ${dir_path}/eula.txt
+if [[ -f "${dir_path}/eula.txt" ]]
+then
+	sed -i 's/eula=false/eula=true/' ${dir_path}/eula.txt
+else
+	echo "eula=true" > ${dir_path}/eula.txt
+fi
 check_if_ok 1 "Accepting EULA terms"
 
 ${startup} &> log.txt
