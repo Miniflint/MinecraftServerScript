@@ -168,24 +168,21 @@ else
 fi
 
 #writing the script
-bin=$"#!/bin/bash\n\t"
-echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
-chmod +x ${script_path}/${dir_name}.sh
-cp ${script_path}/${dir_name}.sh ${dir_path}/
+if [[ $url == *"forge"* ]]
+then
+	ln -s "${dir_path}/run.sh" "${script_path}/${dir_name}.sh"
+else
+	bin=$"#!/bin/bash\n\t"
+	echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
+	chmod +x ${script_path}/${dir_name}.sh
+	cp ${script_path}/${dir_name}.sh ${dir_path}/
+fi
 sleep 1
-
 if [[ -f ${script_path}/${dir_name}.sh ]]
 then
 	check_if_ok 1 "Creation of the script"
 else
 	check_if_ok 0 "Creation of the script"
-	echo -e "${bin} cd ${dir_path} && ${startup}" > "${script_path}/${dir_name}.sh"
-	if [[ -f ${script_path}/${dir_name}.sh ]]
-	then
-        	check_if_ok 1 "Creation of the script"
-	else
-        	check_if_ok 2 "Creation of the script"
-	fi
 fi
 
 ############### IF URL IS FORGE STARTING IS DIFFERENT #########
@@ -251,5 +248,5 @@ fi
 
 sleep 1
 check_if_ok 1 "Having fun"
-echo -e "${no_color}THANKS FOR DOWNLOADING\nTo start the server : cd ${script_path} + ./${dir_name}.sh"
-echo -e "${no_color}To create the service (start server on reboot): sudo cp ${dir_script}/${dir_name}.service /etc/systemd/system/"
+echo -e "${no_color}THANKS FOR DOWNLOADING\nTo start the server : cd ${script_path} + ./${dir_name}.sh\n"
+echo -e "${no_color}To create the service (start server on reboot): sudo cp ${dir_script}/${dir_name}.service /etc/systemd/system/\n"
