@@ -6,16 +6,18 @@ RED='\033[0;31m'
 cyan='\033[0;36m'
 printf "\033c"
 
+default_folder_path="/opt"
+
 echo -e "${green}list of worlds : ${NC}"
-for entry in "/opt"/mine*
+for entry in "${default_folder_path}"/mine*
 do
 	echo "${entry}" | cut -c 15-
 done
 echo -e "\n${green}Enter the name of the world to delete${NC}"
 read World
 
-dirName="/opt/minecraft${World}"
-scriptName="/opt/scripts/${World}.sh"
+dirName="${default_folder_path}/minecraft${World}"
+scriptName="${default_folder_path}/scripts/${World}.sh"
 
 check_if_ok () {
         not_ok="${NC}[${RED}NOT OK${NC}] : $2"
