@@ -28,7 +28,7 @@ name="${dir_name}.jar"
 default_folder_path="/home/ubuntu/servers_folder"
 dir_path="/${default_folder_path}/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
-startup="java -Xms4G -Xmx5G -jar ${path_jar} nogui "
+startup="java -Xms4G -Xmx4G -jar ${path_jar} nogui "
 script_path="/${default_folder_path}/scripts"
 dir_script=`pwd`
 
@@ -43,9 +43,6 @@ package+=("openjdk-17-jre-headless")
 package+=("openjdk-19-jre-headless")
 package+=("openjdk-21-jre-headless")
 package+=("openjdk-22-jre-headless")
-#test if it's on admin
-sudo -n true
-test $? -eq 0 || exit 1 "You should have sudo priveledge to run this script"
 
 #fonction to print if it's OK or NOT OK
 check_if_ok () {
