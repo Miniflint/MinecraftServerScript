@@ -25,7 +25,7 @@ read game_mode
 
 #Declare variables
 name="${dir_name}.jar"
-default_folder_path="/home/$USER/servers_folder"
+default_folder_path="/home/[CHANGE_ME]/servers_folder"
 dir_path="${default_folder_path}/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
 if [[ $url == *"forge"* ]]
@@ -37,7 +37,6 @@ fi
 script_path="${default_folder_path}/scripts"
 dir_script=`pwd`
 
-echo $dir_script
 #install requirement. you may need to use another version of open-JDK
 #you may also need multiple java version
 #you can add a package by doing this : package+=("package_name_here")
@@ -89,6 +88,7 @@ sleep 1
 #check pre-requisite
 for pkg in ${package[@]}
 do
+	sudo apt-get install -y "$pkg"
 	if [[ `apt-cache search --names-only "$pkg"` ]]
 	then
 		check_if_ok 1 "installation of pre-requisite -> $pkg"
@@ -252,7 +252,7 @@ Restart=on-failure\n
 [Install]\n
 WantedBy=multi-user.target\n
 """
-echo ${systemctl_var} > ${dir_path}/${dir_name}.service
+echo -e ${systemctl_var} > ${dir_path}/${dir_name}.service
 if [[ -s ${dir_path}/${dir_name}.service ]]
 then
 	check_if_ok 1 "Service file creation"
