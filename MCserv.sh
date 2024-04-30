@@ -45,9 +45,6 @@ echo $dir_script
 
 package=("net-tools" "curl" "screen")
 package+=("openjdk-17-jre-headless")
-package+=("openjdk-19-jre-headless")
-package+=("openjdk-21-jre-headless")
-package+=("openjdk-22-jre-headless")
 
 #fonction to print if it's OK or NOT OK
 check_if_ok () {
@@ -88,7 +85,6 @@ sleep 1
 #check pre-requisite
 for pkg in ${package[@]}
 do
-	sudo apt-get install -y "$pkg" &> /dev/null
 	if [[ `apt-cache search --names-only "$pkg"` ]]
 	then
 		check_if_ok 1 "installation of pre-requisite -> $pkg"
@@ -174,12 +170,6 @@ fi
 
 ############### IF URL IS FORGE STARTING IS DIFFERENT #########
 ############### I DON'T KNOW IF IT STILL WORKS ################
-cd ${dir_path}
-if [[ $url == *"forge"* ]]
-then
-	java -jar ${path_jar} --installServer &> log.txt
-fi
-check_if_ok 1 "Un-jaring the file"
 
 #writing the script
 bin=$"#!/bin/bash\n\t"
@@ -217,22 +207,22 @@ fi
 
 #create service
 systemctl_var="""
-[Unit]
-Description=Minecraft Server ${dir_name}
-After=network.target
-
-[Service]
-User=root
-Group=root
-WorkingDirectory=${dir_script}
-ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${dir_script}/${dir_name}.sh
-ExecStop=/bin/bash -c 'screen -S service_${dir_name} -p 0 -X stuff \"stop\"'
-Type=simple
-RemainAfterExit=yes
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
+[Unit]\n
+Description=Minecraft Server ${dir_name}\n
+After=network.target\n
+\n
+[Service]\n
+User=root\n
+Group=root\n
+WorkingDirectory=${dir_script}\n
+ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${dir_script}/${dir_name}.sh\n
+ExecStop=/bin/bash -c 'screen -S service_${dir_name} -p 0 -X stuff \"stop\"'\n
+Type=simple\n
+RemainAfterExit=yes\n
+Restart=on-failure\n
+\n
+[Install]\n
+WantedBy=multi-user.target\n
 """
 echo ${systemctl_var} > ${dir_path}/${dir_name}.service
 if [[ -s ${dir_path}/${dir_name}.service ]]
@@ -245,4 +235,4 @@ fi
 sleep 1
 check_if_ok 1 "Having fun"
 echo -e "${no_color}THANKS FOR DOWNLOADING\nTo start the server : cd ${script_path} + ./${dir_name}.sh\n"
-echo -e "${no_color}To create the service (start server on reboot): sudo cp ${dir_script}/${dir_name}.service /etc/systemd/system/\n"
+echo -e "${no_color}To create the service (start server on reboot): sudo cp ${dir_path}/${dir_name}.service /etc/systemd/system/\n"
