@@ -30,7 +30,7 @@ dir_path="${default_folder_path}/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
 if [[ $url == *"forge"* ]]
 then
-	startup="./run.sh nogui "
+	startup="bash ${dir_path}/run.sh nogui "
 else
 	startup="java -Xms4G -Xmx4G -jar ${path_jar} nogui "
 fi
@@ -48,6 +48,7 @@ package+=("openjdk-17-jre-headless")
 
 #fonction to print if it's OK or NOT OK
 check_if_ok () {
+	local waiting="${no_color}[${cyan}NOT OK${no_color}] : $2"
 	local not_ok="${no_color}[${red}NOT OK${no_color}] : $2"
 	local ok="${no_color}[${green}OK${no_color}] : $2"
 	if [[ $1 == 1 ]]
@@ -56,9 +57,12 @@ check_if_ok () {
 	elif [[ $1 == 0 ]]
 	then
 		echo -e ${not_ok}
-	else
+	elif [[ $1 == 2 ]]
+	then
 		echo -e ${not_ok}
 		exit
+	else
+		echo -e ${waiting}
 	fi
 }
 
@@ -203,6 +207,30 @@ then
 	check_if_ok 1 "Server.properties overwrite"
 else
 	check_if_ok 2 "Server.properties overwrite"
+fi
+
+if [[ $url == *"forge"* ]]
+then
+	cd ${dir_path}
+	echo "Starting to unjar the file. it may take some time"
+	java -jar ${dir_path}/${dir_name}.jar --installServer > /dev/null &
+	PID=$!
+	i=0
+	echo -ne "Loading"
+	while kill -0 $PID 2>/dev/null 
+	do
+		if [ $i -gt 10 ]
+		then
+			i=0
+			echo -ne "\033[2K"
+			echo -ne "\rLoading"
+		else
+			echo -ne "."
+		fi
+		((i++))
+		sleep 1
+	done
+	check_if_ok 1 "Waiting the file"
 fi
 
 #create service
