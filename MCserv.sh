@@ -88,7 +88,7 @@ sleep 1
 #check pre-requisite
 for pkg in ${package[@]}
 do
-	sudo apt-get install -y "$pkg"
+	sudo apt-get install -y "$pkg" > /dev/null
 	if [[ `apt-cache search --names-only "$pkg"` ]]
 	then
 		check_if_ok 1 "installation of pre-requisite -> $pkg"
