@@ -242,8 +242,8 @@ After=network.target\n
 [Service]\n
 User=root\n
 Group=root\n
-WorkingDirectory=${dir_script}\n
-ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${dir_script}/${dir_name}.sh\n
+WorkingDirectory=${script_path}\n
+ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${script_path}/${dir_name}.sh\n
 ExecStop=/bin/bash -c 'screen -S service_${dir_name} -p 0 -X stuff \"stop\"'\n
 Type=simple\n
 RemainAfterExit=yes\n
