@@ -25,7 +25,7 @@ read game_mode
 
 #Declare variables
 name="${dir_name}.jar"
-default_folder_path="/home/[CHANGE_ME]/servers_folder"
+default_folder_path="/opt"
 dir_path="${default_folder_path}/minecraft${dir_name}"
 path_jar="${dir_path}/${name}"
 if [[ $url == *"forge"* ]]
@@ -235,22 +235,21 @@ fi
 
 #create service
 systemctl_var="""
-[Unit]\n
-Description=Minecraft Server ${dir_name}\n
-After=network.target\n
-\n
-[Service]\n
-User=root\n
-Group=root\n
-WorkingDirectory=${script_path}\n
-ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${script_path}/${dir_name}.sh\n
-ExecStop=/bin/bash -c 'screen -S service_${dir_name} -p 0 -X stuff \"stop\"'\n
-Type=simple\n
-RemainAfterExit=yes\n
-Restart=on-failure\n
-\n
-[Install]\n
-WantedBy=multi-user.target\n
+[Unit]\n\
+Description=Minecraft Server ${dir_name}\n\
+After=network.target\n\
+\n\
+[Service]\n\
+User=${USER}\n\
+WorkingDirectory=${script_path}\n\
+ExecStart=/usr/bin/screen -dmS service_${dir_name} /bin/bash ${script_path}/${dir_name}.sh\n\
+ExecStop=/bin/bash -c 'screen -S service_${dir_name} -p 0 -X stuff \"stop\"'\n\
+Type=simple\n\
+RemainAfterExit=yes\n\
+Restart=on-failure\n\
+\n\
+[Install]\n\
+WantedBy=multi-user.target\n\
 """
 echo -e ${systemctl_var} > ${dir_path}/${dir_name}.service
 if [[ -s ${dir_path}/${dir_name}.service ]]
@@ -263,4 +262,6 @@ fi
 sleep 1
 check_if_ok 1 "Having fun"
 echo -e "${no_color}THANKS FOR DOWNLOADING\nTo start the server : cd ${script_path} + ./${dir_name}.sh\n"
-echo -e "${no_color}To create the service (start server on reboot): sudo cp ${dir_path}/${dir_name}.service /etc/systemd/system/\n"
+echo -e "To create the service (start server on boot): sudo cp ${dir_path}/${dir_name}.service /etc/systemd/system/ && sudo systemctl enable ${dir_name}.service\n"
+echo -e "To create the service (AS USER): cp ${dir_path}/${dir_name}.service ${HOME}/.config/systemd/user/ && systemctl enable --user ${dir_name}.service\n"
+echo -e "You might need to create the directory '.config' 'systemd' 'user'"
